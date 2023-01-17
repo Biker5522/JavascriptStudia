@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css.css">
+    
+    <title>Piano</title>
+</head>
+
+<body>
+    <main>
+        
+
+        <div class="AudioMain">
+            <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3"  id ="kick"/>
+            <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3"  id ="kick2"/>
+            <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3"   id ="kick3"/>
+            <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3"   id ="kick4"/>
+        </div>
+
+
+        <ul class="set">
+            <li class="white b"></li>
+            <li class="black as"></li>
+            <li class="white a"></li>
+            <li class="black gs"></li>
+            <li class="white g"></li>
+            <li class="black fs"></li>
+            <li class="white f"></li>
+            <li class="white e"></li>
+                <li class="black ds"></li>
+                <li class="white d"></li>
+                <li class="black cs"></li>
+                <li class="white c"></li>
+          </ul>
+
+        <div class="piano">
+        <div class="pianoKeyWhite pianoKey">   
+        </div>
+        <div class="pianoKeyWhite pianoKey">   
+        </div>
+        <div class="pianoKeyWhite pianoKey">    
+        </div>
+        <div class="pianoKeyWhite pianoKey">    
+        </div>
+        <div class="pianoKeyWhite pianoKey">     
+        </div>
+        <div class="pianoKeyWhite pianoKey" >     
+        </div>
+        <div class="pianoBlacks">
+        <div class="pianoKeyBlack pianoKey">      
+        </div> 
+        <div class="pianoKeyBlack pianoKey">      
+        </div>
+        <div class="pianoKeyBlack pianoKey">     
+        </div>
+        <div class="pianoKeyBlack pianoKey">    
+        </div>
+        <div class="pianoKeyBlack pianoKey">
+                
+        </div>
+    </div>
+    </div>
+        <button id="recordButton">Record</button>
+          
+    </main>
+<!-- 
+    <script type="text/javascript">
+        
+        let audios ={
+            'a' : document.querySelector("#kick"),
+            's' : document.querySelector("#kick2"),
+            'd' : document.querySelector("#kick3"),
+            'f': document.querySelector("#kick4"),
+           
+        }
+     
+        document.body.addEventListener("keypress",playSound)
+        let button = document.querySelector("#recordButton")
+
+        function playSound(key){
+            array=['a','a','a','a','a','a','a','a','a']
+            if(key.key=='p'){playRecord(array)}
+            else if(key.key==undefined){let audio = audios[key]
+                audio.currentTime=0;
+            audio.play();}
+            else{
+            let audio = audios[key.key]
+            console.log(audio)
+            audio.currentTime=0;
+            audio.play();
+            }
+        }
+
+        button.addEventListener("click",record)
+        function record(){
+
+        }
+    
+        function playRecord(array){
+            console.log(array)
+            for(let i=0;i<array.length;i++){
+                    console.log(array[i])
+                    if(isNan(array[i]))
+                    playSound(array[i])
+                }
+            }
+        
+
+        
+
+                 
+    </script> -->
+</body>
+<script src="script.js"></script>
+</html>
