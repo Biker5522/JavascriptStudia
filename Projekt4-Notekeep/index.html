@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css.css">
     <title>NoteKeep</title>
   </head>
   <body>
@@ -11,86 +12,31 @@
       <h1>Dodaj Notatke</h1>
       <form id="form">
         <div id="inputs">
-          <input type="text" id="title" value="-" class="numberForm" /><br />
-          <input type="text" id="body" value="0" class="numberForm" /><br />
-          <input type="text" id="color" value="0" class="numberForm" /><br />
+          <label>Title:</label>
+          <input type="text" id="title" value=""  class="Form" /><br />
+          <label>Body:</label>
+          <input type="text" id="body" value="" class="Form" /><br />
+          
+          <label for="head">Color</label>
+          <input type="color" id="color" name="color"><br/>
+          <label for="scales">Pin</label>
+          <input type="checkbox" id="isPinned" name="isPinned" checked>
+      
+    </div>
+           
+    
         </div>
-        <input type="submit" value="Dodaj" />
+        <input type="submit" value="AddNote" />
       </form>
       <br />
       <div>
         <h1>Notatki</h1>
-        <p>Max=<span id="max"> </span></p>
-        <p>Min=<span id="min"> </span></p>
-        <p>Suma=<span id="sum"> </span></p>
-        <p>Średnia=<span id="sre"> </span></p>
+        <div id="notesContainer">
+
+        </div>
       </div>
     </main>
 
-    <script type="text/javascript">
-      const form = document.querySelector("#form");
-      const addButton = document.querySelector("#addNumber");
-      const inputs = document.querySelector("#inputs");
-
-      addButton.addEventListener("click", addNumberFunc);
-      form.addEventListener("input", submitFunc);
-      form.addEventListener("submit", submitFunc);
-
-      //Dodawanie Pola
-      function addNumberFunc(event) {
-        const buttonClone = document
-          .querySelector("#numberOne")
-          .cloneNode(false);
-        inputs.appendChild(buttonClone);
-        submitFunc(event);
-        event.preventDefault();
-      }
-
-      //Przeliczanie
-      function submitFunc(event) {
-        //sort
-        let numbers = document.querySelectorAll(".numberForm");
-        let sortedArray = [];
-
-        for (i = 0; i < numbers.length; i++) {
-          sortedArray[i] = numbers[i].value;
-        }
-
-        for (let i = 0; i < sortedArray.length; i++) {
-          for (let j = 0; j < sortedArray.length - i - 1; j++) {
-            if (sortedArray[j + 1] < sortedArray[j]) {
-              [sortedArray[j + 1], sortedArray[j]] = [
-                sortedArray[j],
-                sortedArray[j + 1],
-              ];
-            }
-          }
-        }
-
-        //min
-        const min = document.querySelector("#min");
-        console.log(sortedArray);
-        min.innerText = sortedArray[0];
-
-        //max
-        const max = document.querySelector("#max");
-        max.innerText = sortedArray[sortedArray.length - 1];
-
-        //suma
-        const suma = document.querySelector("#sum");
-        let sumaNumber = 0;
-        for (let i = 0; i < numbers.length; i++) {
-          sumaNumber += +numbers[i].value;
-        }
-        sum.innerText = sumaNumber;
-
-        //srednia
-        const sre = document.querySelector("#sre");
-        let sreNumber = +sumaNumber / +numbers.length;
-        sre.innerText = sreNumber;
-
-        event.preventDefault();
-      }
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
