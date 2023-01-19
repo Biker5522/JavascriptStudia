@@ -1,80 +1,42 @@
-class Note{
-  constructor(title,body,color,isPinned,dateOfCreation){
-    this.title=title
-    this.body=body
-    this.color=color
-    this.isPinned=isPinned
+const form = document.querySelector("#form");
+const inputCity = document.querySelector("#city");
+let mainWeatherContainer = document.querySelector("#mainWeatherContainer");
+let mainWeather;
+let activeCity;
+
+const submitFunc = async (event) => {
+  event.preventDefault();
+  activeCity = inputCity.value;
+
+  if (!activeCity) {
+    console.log("Please enter a city");
+    return;
   }
-}
+  const mainWeather = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${activeCity}&appid=927134943d81eb3635cd2d278538c69c`
+  )
+    .then((response) => response.json())
+    .catch((error) => console.log(error));
 
-let Notes=[]
+  console.log(mainWeather);
+  displayWeather(mainWeather, mainWeatherContainer);
+};
+form.addEventListener("submit", submitFunc);
 
+const displayWeather = (data, place) => {
+  place.innerHTML = "";
 
-//FORM
-const form = document.querySelector('#form')
-const inputTitle = document.querySelector('#title')
-const inputBody = document.querySelector('#body')
-const inputColor = document.querySelector('#color')
-const inputIsPinned = document.querySelector('#isPinned')
-const notesContainer = document.querySelector('#notesContainer')
-
-
-
-
-const submitFunc=(event)=>{
-let newNote=new Note(inputTitle.value,inputBody.value,inputColor.value,inputIsPinned.checked)
-Notes.unshift(newNote)
-console.log(Notes)
-localStorage.setItem("Notes", JSON.stringify(Notes))
-let storedNotes = localStorage.getItem("Notes");
-  if (storedNotes) {
-    Notes = JSON.parse(storedNotes);
-  }
-  renderNotes() 
-  console.log(Notes)
-
-window.addEventListener("storage", function(event) {
-  let storedNotes = localStorage.getItem("Notes");
-  if (storedNotes) {
-    Notes = JSON.parse(storedNotes);
-  }
-  console.log(storedNotes)
-  console.log(event.key + " has been changed from " + event.oldValue + " to " + event.newValue);
-  console.log(localStorage.getItem("Notes"))
-
-
-})
-event.preventDefault()}
-
-const checkNotes = () => {
-  let storedNotes = localStorage.getItem("Notes");
-  if (storedNotes) {
-    let currentNotes = JSON.parse(storedNotes);
-    if (JSON.stringify(currentNotes) !== JSON.stringify(Notes)) {
-      Notes = currentNotes;
-      console.log("Notes array has been updated!");
-      renderNotes()
-    }
-  }
-}
-setInterval(checkNotes, 1000);
-
-const renderNotes = () => {
-  notesContainer.innerHTML = "";
-  for (let i = 0; i < Notes.length; i++) {
-    let note = Notes[i];
-    let noteElement = document.createElement("div");
-    noteElement.innerHTML = `
-      <h3>${note.title}</h3>
-      <p>${note.body}</p>
-      <p>Color: ${note.color}</p>
-      <p>Pinned: ${note.isPinned}</p>
+  let noteElement = document.createElement("div");
+  noteElement.innerHTML = `
+  <div class="m-auto p-4 border-2 rounded-lg flex flex-col justify-center gap-2">
+      <h2 class="text-lg font-bold m-auto">${data.name}</h2>
+      <p class="text-sm m-auto">${data.weather[0].description}</p>
+      <p class="text-4xl m-auto"> ${kelvinToCelsius(data.main.temp)}C</p>
+      </div>
+      
     `;
-    notesContainer.appendChild(noteElement);
-  }
+  place.appendChild(noteElement);
+};
+function kelvinToCelsius(kelvin) {
+  return Math.floor(kelvin - 273.15);
 }
-
-
-
-form.addEventListener('submit', submitFunc)
-

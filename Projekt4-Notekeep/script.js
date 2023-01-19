@@ -1,50 +1,56 @@
-class Note{
-  constructor(title,body,color,isPinned,dateOfCreation){
-    this.title=title
-    this.body=body
-    this.color=color
-    this.isPinned=isPinned
+class Note {
+  constructor(title, body, color, isPinned, dateOfCreation) {
+    this.title = title;
+    this.body = body;
+    this.color = color;
+    this.isPinned = isPinned;
   }
 }
 
-let Notes=[]
-
+let Notes = [];
 
 //FORM
-const form = document.querySelector('#form')
-const inputTitle = document.querySelector('#title')
-const inputBody = document.querySelector('#body')
-const inputColor = document.querySelector('#color')
-const inputIsPinned = document.querySelector('#isPinned')
-const notesContainer = document.querySelector('#notesContainer')
+const form = document.querySelector("#form");
+const inputTitle = document.querySelector("#title");
+const inputBody = document.querySelector("#body");
+const inputColor = document.querySelector("#color");
+const inputIsPinned = document.querySelector("#isPinned");
+const notesContainer = document.querySelector("#notesContainer");
 
-
-
-
-const submitFunc=(event)=>{
-let newNote=new Note(inputTitle.value,inputBody.value,inputColor.value,inputIsPinned.checked)
-Notes.unshift(newNote)
-console.log(Notes)
-localStorage.setItem("Notes", JSON.stringify(Notes))
-let storedNotes = localStorage.getItem("Notes");
-  if (storedNotes) {
-    Notes = JSON.parse(storedNotes);
-  }
-  renderNotes() 
-  console.log(Notes)
-
-window.addEventListener("storage", function(event) {
+const submitFunc = (event) => {
+  let newNote = new Note(
+    inputTitle.value,
+    inputBody.value,
+    inputColor.value,
+    inputIsPinned.checked
+  );
+  Notes.unshift(newNote);
+  console.log(Notes);
+  localStorage.setItem("Notes", JSON.stringify(Notes));
   let storedNotes = localStorage.getItem("Notes");
   if (storedNotes) {
     Notes = JSON.parse(storedNotes);
   }
-  console.log(storedNotes)
-  console.log(event.key + " has been changed from " + event.oldValue + " to " + event.newValue);
-  console.log(localStorage.getItem("Notes"))
+  renderNotes();
+  console.log(Notes);
 
-
-})
-event.preventDefault()}
+  window.addEventListener("storage", function (event) {
+    let storedNotes = localStorage.getItem("Notes");
+    if (storedNotes) {
+      Notes = JSON.parse(storedNotes);
+    }
+    console.log(storedNotes);
+    console.log(
+      event.key +
+        " has been changed from " +
+        event.oldValue +
+        " to " +
+        event.newValue
+    );
+    console.log(localStorage.getItem("Notes"));
+  });
+  event.preventDefault();
+};
 
 const checkNotes = () => {
   let storedNotes = localStorage.getItem("Notes");
@@ -53,10 +59,10 @@ const checkNotes = () => {
     if (JSON.stringify(currentNotes) !== JSON.stringify(Notes)) {
       Notes = currentNotes;
       console.log("Notes array has been updated!");
-      renderNotes()
+      renderNotes();
     }
   }
-}
+};
 setInterval(checkNotes, 1000);
 
 const renderNotes = () => {
@@ -72,12 +78,6 @@ const renderNotes = () => {
     `;
     notesContainer.appendChild(noteElement);
   }
-}
+};
 
-
-
-
-
-
-form.addEventListener('submit', submitFunc)
-
+form.addEventListener("submit", submitFunc);
