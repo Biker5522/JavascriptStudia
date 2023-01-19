@@ -76,5 +76,8 @@ const renderNotes = () => {
 
 
 
+
+
+
 form.addEventListener('submit', submitFunc)
 
