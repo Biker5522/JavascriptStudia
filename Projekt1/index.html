@@ -1,95 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <title>Projekt 1</title>
-</head>
-<body>
+  </head>
+  <body>
     <main>
-    <h1>Formularz</h1>
-    <form id="form">
-        <div id="inputs">
-        <input type="number" id="numberOne" value="0" class="numberForm"><br>
-        <input type="number" id="numberTwo" value="0" class="numberForm"><br>
-        <input type="number" id="numberThree" value="0" class="numberForm"><br>
-    </div>
-        <input type="submit" value="Przelicz" >
-    </form>
-    <button id="addNumber">Dodaj liczbe</button>
-    <br>
-    <div>
-        <h1>Wyniki</h1>
-        <p>Max=<span id="max"> </span></p>
-        <p>Min=<span id="min"> </span></p>
-        <p>Suma=<span id="sum"> </span></p>
-        <p>Średnia=<span id="sre"> </span></p>
-    </div>
+      <div class="justify-content flex flex-col m-[20em] mt-24 text-center">
+        <div class="border-2 rounded-lg">
+          <h1 class="font-bold">Formularz</h1>
+          <form id="form" class="">
+            <div id="inputs">
+              <div>
+                <input
+                  type="number"
+                  id="numberOne"
+                  value="0"
+                  class="numberForm border rounded mt-2"
+                />
+              </div>
+              <div>
+                <span onclick="deleteNumberFunc(this)">X</span>
+                <input
+                  type="number"
+                  id="numberTwo"
+                  value="0"
+                  class="numberForm border rounded mt-2"
+                />
+              </div>
+              <div id="numberInput">
+                <span onclick="deleteNumberFunc(this)">X</span>
+                <input
+                  type="number"
+                  id="numberThree"
+                  value="0"
+                  class="numberForm border rounded mt-2"
+                />
+              </div>
+            </div>
+            <input
+              type="submit"
+              value="Przelicz"
+              class="border rounded-lg bg-black text-white p-[2px] m-2 hover:bg-gray-700 hover:font-bold"
+            />
+          </form>
+
+          <button id="addNumber" class="hover:font-bold">Dodaj liczbe</button>
+        </div>
+        <br />
+        <div class="text-left">
+          <h1 class="font-bold">Wyniki</h1>
+          <p>Max=<span id="max"> </span></p>
+          <p>Min=<span id="min"> </span></p>
+          <p>Suma=<span id="sum"> </span></p>
+          <p>Średnia=<span id="sre"> </span></p>
+        </div>
+      </div>
     </main>
 
-    
     <script type="text/javascript">
+      const form = document.querySelector("#form");
+      const addButton = document.querySelector("#addNumber");
+      const inputs = document.querySelector("#inputs");
 
-                    const form = document.querySelector('#form')
-                    const addButton = document.querySelector('#addNumber')
-                    const inputs = document.querySelector("#inputs")
-                   
-                    addButton.addEventListener('click', addNumberFunc);
-                    form.addEventListener('input', submitFunc);
-                    form.addEventListener('submit', submitFunc);
+      addButton.addEventListener("click", addNumberFunc);
+      form.addEventListener("input", submitFunc);
+      form.addEventListener("submit", submitFunc);
 
-                    //Dodawanie Pola
-                    function addNumberFunc(event) {
-                        
-                        const buttonClone = document.querySelector('#numberOne').cloneNode(false)
-                        inputs.appendChild(buttonClone);
-                        submitFunc(event);
-                        event.preventDefault();
-                    }
+      //Dodawanie Pola
+      function addNumberFunc(event) {
+        const buttonClone = document
+          .querySelector("#numberInput")
+          .cloneNode(true);
+        inputs.appendChild(buttonClone);
+        submitFunc(event);
+        event.preventDefault();
+      }
+      //Usuwanie Pola
+      function deleteNumberFunc(element) {
+        console.log("x");
+        const parentDiv = element.parentNode;
+        parentDiv.remove();
+      }
 
-                   //Przeliczanie
-                    function submitFunc(event) {
-                        //sort
-                        let numbers = document.querySelectorAll('.numberForm');
-                        let sortedArray= [];
+      //Przeliczanie
+      function submitFunc(event) {
+        //sort
+        let numbers = document.querySelectorAll(".numberForm");
+        let sortedArray = [];
 
-                        for (i = 0; i < numbers.length; i++) {
-                            sortedArray[i] = numbers[i].value;
-                        }
-                        
-                        for(let i=0;i< sortedArray.length;i++){
-                            for(let j = 0; j < sortedArray.length - i - 1; j++){
-                                if(sortedArray[j + 1] < sortedArray[j]){
-                                    [sortedArray[j + 1] ,sortedArray[j]] = [sortedArray[j], sortedArray[j + 1]]
-                                }
-                            }
-                        } 
-                           
-                        //min
-                        const min = document.querySelector('#min');
-                        console.log(sortedArray)
-                        min.innerText= sortedArray[0];
-                        
-                        //max
-                        const max = document.querySelector('#max');
-                        max.innerText= sortedArray[sortedArray.length-1];
+        for (i = 0; i < numbers.length; i++) {
+          sortedArray[i] = numbers[i].value;
+        }
 
-                        //suma
-                        const suma = document.querySelector('#sum');
-                        let sumaNumber= 0;
-                        for(let i = 0; i <numbers.length; i++){
-                            sumaNumber+= +numbers[i].value;
-                        }
-                        sum.innerText= sumaNumber;
+        for (let i = 0; i < sortedArray.length; i++) {
+          for (let j = 0; j < sortedArray.length - i - 1; j++) {
+            if (sortedArray[j + 1] < sortedArray[j]) {
+              [sortedArray[j + 1], sortedArray[j]] = [
+                sortedArray[j],
+                sortedArray[j + 1],
+              ];
+            }
+          }
+        }
 
-                        //srednia
-                        const sre = document.querySelector('#sre');
-                        let sreNumber= +sumaNumber/(+numbers.length);
-                        sre.innerText=sreNumber;
-                        
-                        event.preventDefault();
-                    }  
+        //min
+        const min = document.querySelector("#min");
+        console.log(sortedArray);
+        min.innerText = sortedArray[0];
+
+        //max
+        const max = document.querySelector("#max");
+        max.innerText = sortedArray[sortedArray.length - 1];
+
+        //suma
+        const suma = document.querySelector("#sum");
+        let sumaNumber = 0;
+        for (let i = 0; i < numbers.length; i++) {
+          sumaNumber += +numbers[i].value;
+        }
+        sum.innerText = sumaNumber;
+
+        //srednia
+        const sre = document.querySelector("#sre");
+        let sreNumber = +sumaNumber / +numbers.length;
+        sre.innerText = sreNumber;
+
+        event.preventDefault();
+      }
     </script>
-</body>
+  </body>
 </html>

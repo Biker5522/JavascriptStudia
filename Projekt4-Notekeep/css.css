@@ -3,3 +3,12 @@ body {
   justify-content: center;
   align-items: center;
 }
+.notesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.note {
+  border-radius: 12px;
+  padding: 20px;
+}

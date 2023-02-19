@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css.css">
+    <title>Projekt 1</title>
+</head>
+<body>
+    <main>
+            
+        <div class="slideshow-container">
+
+            <!-- Full-width images with number and caption text -->
+            <div class="mySlides ">   
+              <img src="https://wompampsupport.azureedge.net/fetchimage?siteId=7575&v=2&jpgQuality=100&width=700&url=https%3A%2F%2Fi.kym-cdn.com%2Fentries%2Ficons%2Ffacebook%2F000%2F032%2F929%2Fshrek.jpg" style="width:100%">
+            </div>
+          
+            <div class="mySlides ">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtXKjf1XPnyC67jApZZq4c0WNcFV8xDd2aWQ&usqp=CAU" style="width:100%">
+            </div>
+          
+            <div class="mySlides ">
+              <img src="https://media.istockphoto.com/id/498559006/photo/old-city-center-view-in-krakow.jpg?s=612x612&w=0&k=20&c=rb6t2JeszlO-tMSgobM8rhEWfFjVFXoI4lr_OOyz2m0=" style="width:100%">
+            </div>
+            <div class="buttons">
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+          </div>
+          </div>
+          <br>
+          
+          <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+          </div>
+          <div style="text-align:center">
+            <span class="stop " onclick="isRunning(this)">STOP</span>
+          </div>
+      
+          <script>
+            let slideIndex = 0;
+            let running = true;
+            let timeout;
+            
+            showSlides();
+            
+            function showSlides() {
+              console.log(slideIndex)
+              let i;
+              let slides = document.getElementsByClassName("mySlides");
+              for (i = 0; i < slides.length; i++) {
+             
+                slides[i].style.opacity = "0";
+              }
+              slideIndex++;
+              if (slideIndex > slides.length) {slideIndex = 1}
+             
+              slides[slideIndex-1].style.opacity = "1";
+              timeout = setTimeout(showSlides, 2000); 
+            }
+            
+            function isRunning(stopButton) {
+              if (running) {
+                clearTimeout(timeout);
+                running = false;
+                console.log("paused");
+                stopButton.innerHTML = "START"
+              } else {
+                timeout = setTimeout(showSlides, 2000);
+                running = true;
+                console.log("resumed");
+                stopButton.innerHTML = "STOP"
+            
+              }
+            }
+            
+            function plusSlides(n) {
+              if (running) clearTimeout(timeout);
+              
+              let slides = document.getElementsByClassName("mySlides");
+              slideIndex += n;
+              if (slideIndex > slides.length) {slideIndex = 1}
+              if (slideIndex < 1) {slideIndex = slides.length}
+              for (let i = 0; i < slides.length; i++) {
+                slides[i].style.opacity = "0";
+              }
+              slides[slideIndex-1].style.opacity = "1";
+
+              if (running) timeout = setTimeout(showSlides, 2000);
+            }
+
+            function currentSlide(n) {
+              if (running) clearTimeout(timeout);
+              
+              let slides = document.getElementsByClassName("mySlides");
+              slideIndex = n;
+             
+              for (let i = 0; i < slides.length; i++) {
+                slides[i].style.opacity = "0";
+              }
+              slides[slideIndex-1].style.opacity = "1";
+
+              if (running) timeout = setTimeout(showSlides, 2000);
+            }
+            </script>
+</body>
+</html>
