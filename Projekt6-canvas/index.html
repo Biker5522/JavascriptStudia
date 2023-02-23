@@ -2,20 +2,29 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Nic się nie działo, naprawdę nic się...</title>
+    <title>Canvas</title>
   </head>
   <body>
-    <canvas id="canvas" width="400" height="400"></canvas>
-    <br />
-    <label for="numBalls">Liczba kul:</label>
-    <input type="number" id="numBalls" value="10" />
-    <br />
-    <label for="ballDistance">Odległość między kulami:</label>
-    <input type="number" id="ballDistance" value="100" />
-    <br />
-    <button id="startButton">Start</button>
-    <button id="resetButton">Reset</button>
-    <script src="script.js"></script>
+    <div>
+      <br />
+      <label for="numBalls">Liczba kul:</label>
+      <input type="number" id="numBalls" value="10" />
+      <br />
+      <label for="ballDistance">Odległość między kulami:</label>
+      <input type="number" id="ballDistance" value="50" />
+      <label for="screenWidth">Szerokość ekranu</label>
+      <input type="number" id="screenWidth" value="400" />
+      <br />
+
+      <button id="startButton">Start</button>
+      <button id="resetButton">Reset</button>
+    </div>
+    <canvas
+      id="canvas"
+      width="400"
+      height="400"
+      style="border: 1px solid #000000"
+    ></canvas>
   </body>
   <script type="text/javascript">
     const canvas = document.getElementById("canvas");
@@ -24,13 +33,12 @@
     // get user input for number of balls and minimum distance
     const numBallsInput = document.getElementById("numBalls");
     const ballDistanceInput = document.getElementById("ballDistance");
+    const screenWidthInput = document.getElementById("screenWidth");
 
     // set up balls array
     let balls = [];
 
     // set up variables for animation
-    let running = false;
-    let animationId;
 
     // set up event listeners for buttons
     const startButton = document.getElementById("startButton");
@@ -38,124 +46,85 @@
     startButton.addEventListener("click", startAnimation);
     resetButton.addEventListener("click", resetAnimation);
 
-    // set up event listener for user input
-    numBallsInput.addEventListener("input", resetAnimation);
-    ballDistanceInput.addEventListener("input", resetAnimation);
-
     // set up function to start animation
     function startAnimation() {
-      if (!running) {
-        running = true;
-        animate();
+      ctx.canvas.width = screenWidthInput.value;
+      ctx.canvas.height = screenWidthInput.value;
+      console.log("start");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < numBallsInput.value; i++) {
+        ctx.beginPath();
+        let x = Math.random() * 300;
+        let y = Math.random() * 300;
+        let xx = randomNumber(-1, 1);
+        let yy = randomNumber(-1, 1);
+        if (yy == 0) yy = 1;
+        if (xx == 0) xx = 1;
+
+        ctx.arc(10 + x, 10 + y, 10, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        balls.push({ x: x, y: y, xx: xx, yy: yy });
       }
+      setInterval(animate, 10);
     }
 
     // set up function to reset animation
     function resetAnimation() {
-      // stop animation if running
-      if (running) {
-        running = false;
-        cancelAnimationFrame(animationId);
-      }
-      // clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // create new balls array
       balls = [];
-      // add balls to array
-      const numBalls = parseInt(numBallsInput.value);
-      const minDist = parseFloat(ballDistanceInput.value);
-      for (let i = 0; i < numBalls; i++) {
-        const radius = 10;
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const dx = Math.random() * 2 - 1;
-        const dy = Math.random() * 2 - 1;
-        balls.push({ x, y, dx, dy, radius });
-      }
     }
-
-    // set up function to animate balls
     function animate() {
-      // clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // update ball positions
+      // check for collisions between balls and with edges of canvas
       for (let i = 0; i < balls.length; i++) {
-        // update x and y positions
-        balls[i].x += balls[i].dx;
-        balls[i].y += balls[i].dy;
-        // check for collisions with walls
-        if (
-          balls[i].x < balls[i].radius ||
-          balls[i].x > canvas.width - balls[i].radius
-        ) {
-          balls[i].dx *= -1;
-        }
-        if (
-          balls[i].y < balls[i].radius ||
-          balls[i].y > canvas.height - balls[i].radius
-        ) {
-          balls[i].dy *= -1;
-        }
-      }
+        let ball = balls[i];
+        ctx.beginPath(); // move this line outside of the if statement
+        ctx.moveTo(ball.x + 10, ball.y + 10); // move this line outside of the if statement
 
-      // check for collisions between balls
-      for (let i = 0; i < balls.length; i++) {
+        // check for collision with other balls
         for (let j = i + 1; j < balls.length; j++) {
-          // calculate distance between two balls
-          const dist = Math.sqrt(
-            (balls[i].x - balls[j].x) ** 2 + (balls[i].y - balls[j].y) ** 2
-          );
-          // check if distance is less than minimum distance
-          if (dist < ballDistanceInput.value) {
-            // calculate angle between balls
-            const angle = Math.atan2(
-              balls[i].y - balls[j].y,
-              balls[i].x - balls[j].x
-            );
-            // calculate new velocities
-            const v1 = Math.sqrt(balls[i].dx ** 2 + balls[i].dy ** 2);
-            const v2 = Math.sqrt(balls[j].dx ** 2 + balls[j].dy ** 2);
-            const m1 = balls[i].radius ** 2;
-            const m2 = balls[j].radius ** 2;
-            const u1 =
-              (v1 * Math.cos(angle) * (m1 - m2)) / (m1 + m2) +
-              (v2 * Math.cos(angle + Math.PI) * 2 * m2) / (m1 + m2);
-            const u2 =
-              (v2 * Math.cos(angle) * (m2 - m1)) / (m1 + m2) +
-              (v1 * Math.cos(angle + Math.PI) * 2 * m1) / (m1 + m2);
-            const v1x =
-              u1 * Math.cos(angle) +
-              v1 * Math.sin(angle) * Math.cos(angle + Math.PI / 2);
-            const v1y =
-              u1 * Math.sin(angle) +
-              v1 * Math.sin(angle) * Math.sin(angle + Math.PI / 2);
-            const v2x =
-              u2 * Math.cos(angle) +
-              v2 * Math.sin(angle) * Math.cos(angle + Math.PI / 2);
-            const v2y =
-              u2 * Math.sin(angle) +
-              v2 * Math.sin(angle) * Math.sin(angle + Math.PI / 2);
-            // update ball velocities
-            balls[i].dx = v1x;
-            balls[i].dy = v1y;
-            balls[j].dx = v2x;
-            balls[j].dy = v2y;
+          let otherBall = balls[j];
+          let dx = otherBall.x - ball.x;
+          let dy = otherBall.y - ball.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < ballDistanceInput.value) {
+            console.log("line");
+            ctx.lineTo(otherBall.x + 10, otherBall.y + 10);
+            ctx.stroke();
+          }
+
+          if (distance < 20) {
+            let tempX = ball.xx;
+            let tempY = ball.yy;
+            ball.xx = otherBall.xx;
+            ball.yy = otherBall.yy;
+            otherBall.xx = tempX;
+            otherBall.yy = tempY;
           }
         }
-      }
 
-      // draw balls on canvas
-      for (let i = 0; i < balls.length; i++) {
+        // check for collision with edges of canvas
+        if (ball.x < 10 || ball.x > canvas.width - 10) {
+          ball.xx *= -1;
+        }
+        if (ball.y < 10 || ball.y > canvas.height - 10) {
+          ball.yy *= -1;
+        }
+
+        // update ball position
+        ball.x += ball.xx;
+        ball.y += ball.yy;
+
+        // draw ball
         ctx.beginPath();
-        ctx.arc(balls[i].x, balls[i].y, balls[i].radius, 0, 2 * Math.PI);
-        ctx.fillStyle = "blue";
-        ctx.fill();
-        ctx.closePath();
+        ctx.arc(10 + ball.x, 10 + ball.y, 10, 0, 2 * Math.PI);
+        ctx.stroke();
       }
-
-      // request next frame of animation
-      animationId = requestAnimationFrame(animate);
     }
+    const randomNumber = (min, max) =>
+      Math.floor(Math.random() * (max - min)) + min;
   </script>
 </html>

@@ -84,9 +84,7 @@ const displayPinnedWeathers = async () => {
   let storedPinnedWeathers = JSON.parse(localStorage.getItem("pinnedWeathers"));
   console.log("updating pinned weathers");
   if (storedPinnedWeathers) {
-    // Clear existing pinned weathers
     pinnedWeatherContainer.innerHTML = "";
-    // Loop through stored pinned weathers and display them
     for (let i = 0; i < storedPinnedWeathers.length; i++) {
       const pinnedWeather = storedPinnedWeathers[i];
       let weathersFetch = await fetch(
@@ -99,7 +97,7 @@ const displayPinnedWeathers = async () => {
       let pinnedElement = document.createElement("div");
       pinnedElement.innerHTML = `
   <div class="m-auto p-4  shadow-2xl rounded-lg flex flex-col justify-center bg-gray-200 text-gray-100 text-gray-700 shadow-gray-300">
-  <div class="float-right m-auto mr-2" >+</div>
+  
   
     <img src="http://openweathermap.org/img/wn/${
       weathersFetch.weather[0].icon
